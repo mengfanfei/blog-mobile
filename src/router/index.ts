@@ -1,19 +1,57 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import Article from '../views/article/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    redirect: '/article'
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/article',
+    name: 'Article',
+    component: Article,
+    meta: {
+      keepAlive: true,
+      scrollTop: 0,
+      hasTabbar: true,
+      title: '文章'
+    }
+  },
+  {
+    path: '/folder',
+    name: 'Folder',
+    component: () => import('../views/folder/index.vue'),
+    meta: {
+      keepAlive: true,
+      scrollTop: 0,
+      hasTabbar: true,
+      title: '分类'
+    }
+  },
+  {
+    path: '/detail/:id',
+    name: 'Detail',
+    component: () => import('../views/detail/index.vue'),
+    meta: {
+      keepAlive: false,
+      scrollTop: 0,
+      hasTabbar: false,
+      title: '文章详情'
+    }
+  },
+  {
+    path: '/articleList/:type',
+    name: 'ArticleList',
+    component: () => import('../views/articleList/index.vue'),
+    meta: {
+      keepAlive: false,
+      scrollTop: 0,
+      hasTabbar: false,
+    },
+    beforeEnter: (to, from, next) => {
+      document.title = (to.params.type as string)
+      next()
+    }
   }
 ]
 
